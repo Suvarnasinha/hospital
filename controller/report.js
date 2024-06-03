@@ -1,46 +1,59 @@
-const cron = require('node-cron');
+const multer = require('multer');
 const fs = require('fs');
 const { Op } = require('sequelize');
-const { Medication } = require('./models');
+const { medication } = require('../models');
+const cron = require('node-cron');
 
-// Function to generate the CSV report
-const generateReport = async () => {
-  const filePath = `./reports/report_${Date.now()}.csv`;
-
-  try {
-    // Calculate start and end dates of the current week
-    const today = new Date();
-    const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
-    const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6));
-
-    // Fetch medication data from the database for the current week
-    const medications = await Medication.findAll({
-      where: {
-        date: {
-          [Op.between]: [startOfWeek, endOfWeek]
-        }
-      }
-    });
-
-    // Create a CSV string with headers
-    let csvContent = 'Medicine Name,Date,Time,Mark as Done\n';
-
-    // Append medication data to the CSV string
-    medications.forEach(item => {
-      csvContent += `${item.name},${item.date},${item.time},${item.mark_as_done}\n`;
-    });
-
-    // Write CSV content to file
-    fs.writeFileSync(filePath, csvContent);
-
-    console.log(`Report generated: ${filePath}`);
-  } catch (error) {
-    console.error('Error generating report:', error);
+// Set up Multer for file storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'D:\csvhospital');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
   }
+});
+
+const upload = multer({ storage: storage });
+
+const reportgenrator = async (req, res) => {
+   // Assuming you don't need req and res here
+   const filepath = 'D:\csvhospital' + Date.now() + '.csv';
+   const today = new Date();
+   var first = today.getDate() - today.getDay();
+   var last = first + 6;
+ 
+   var startOfWeek = new Date(today.setDate(first)).toUTCString();
+   var endOfWeek = new Date(today.setDate(last)).toUTCString();
+ 
+   const medicationdetail = await medication.findAll({
+     where: {
+       date: { [Op.between]: [startOfWeek, endOfWeek] }
+     }
+   });
+ 
+   if (medicationdetail) {
+     let csvContent = 'Medicine Name,Date,Time\n';
+     medicationdetail.forEach((element) => {
+       csvContent += `${element.name},${element.date},${element.time}\n`;
+     });
+ 
+     fs.writeFile(filepath, csvContent, (err) => {
+       if (err) {
+         console.log(err);
+         res.status(500).send("Error saving file");
+       } else {
+         console.log("Data saved");
+         console.log(filepath);
+         res.status(200).send("File saved successfully");
+       }
+     });
+   }
 };
 
-// Schedule the cron job to run every week (Sunday at midnight)
 cron.schedule('0 0 * * 0', () => {
-  console.log('Running weekly report generation...');
-  generateReport();
+  console.log('making weekly report generation...');
+  // generateReport();
 });
+
+module.exports = { upload,reportgenrator };

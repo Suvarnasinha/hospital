@@ -1,18 +1,20 @@
 const express = require("express");
 const app = express();
-const sequelize = require("./utils/database");
+const cookieParser = require('cookie-parser');
+const sequelize = require("./utils/database.js");
 const bodyParser = require("body-parser");
 
-// Import route file
-const dataRoutes = require("./router/router");
 
+const dataRoutes = require("./router/router.js")
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// Mount route file
 app.use("/", dataRoutes);
 
 sequelize.sync({ force: false });
 app.listen(process.env.PORT || 3023, () => {
   console.log("Running at Port 3023");
 });
+
+

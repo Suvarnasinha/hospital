@@ -27,20 +27,26 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
+      rec_type:{
+        type: Sequelize.STRING
+      },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       start_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       end_date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       time: {
         type: Sequelize.TIME
       },
       day_week: {
         type: Sequelize.STRING
+      },
+      mark_as_done:{
+        type:Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +55,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
       }
     });
   },
