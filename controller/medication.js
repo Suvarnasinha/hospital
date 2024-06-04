@@ -13,8 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
   const { name, description, type, date, start_date, end_date, time, day_week,rec_type } = req.body;
 
   try {
-    const user_id = req.user.id; // Get user ID from request object
-    let newMedication;
+    console.log(req.user);
+    const user_id = req.user.id; 
     if (type === 'one-time') {
       newMedication = await medication.create({
         user_id,
@@ -26,37 +26,51 @@ app.use(bodyParser.urlencoded({ extended: true }));
         mark_as_done:0
       });
     } else if (type === 'recurring') {
-      if(rec_type==='daily'){
+    //   if(rec_type==='daily'){
+    //   newMedication = await medication.create({
+    //     user_id,
+    //     name,
+    //     description,
+    //     type,
+    //     rec_type,
+    //     start_date,
+    //     end_date,
+    //     time,
+    //     mark_as_done:0
+    //   });
+    // }
+    // if(rec_type === 'weekly'){
       newMedication = await medication.create({
         user_id,
         name,
         description,
         type,
-        start_date,
-        end_date,
-        time,
-        mark_as_done:0
-      });
-    }
-    if(rec_type === 'weekly'){
-      newMedication = await medication.create({
-        user_id,
-        name,
-        description,
-        type,
+        rec_type,
         start_date,
         end_date,
         time,
         day_week, //(monday,tuesday)
         mark_as_done:0
       });
-    }
+    // }
     } else {
       return res.status(400).json({ error: 'Invalid medication type' });
-    }
 
-    res.status(201).json({ message: 'Medication added successfully', medication: newMedication });
+    }
+   ;
+
   } catch (error) {
     res.status(500).json({ error: 'Failed to add medication' });
   }
+
+   medicationdata = await medication.findAll();
+   res.render('dashboard', { medicationdata })
 };
+
+
+exports.addmedicationonce = async (req, res) => {
+  res.render("addmedicationonce")
+}
+exports.addmedicationrecuring = async (req, res) => {
+  res.render("addmedicationrecuring")
+}
