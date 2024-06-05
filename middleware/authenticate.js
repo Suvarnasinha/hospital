@@ -1,5 +1,10 @@
 const jwt = require('jsonwebtoken');
-const secretKey = 'secret_key';
+// const secretKey = 'secret_key';
+require('dotenv').config();
+
+// Now you can access the secret key from process.env in your authentication logic
+const secretKey = process.env.SECRET_KEY;
+
 
 
 let loggedOutTokens = [];
