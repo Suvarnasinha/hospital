@@ -1,0 +1,100 @@
+<!-- reminder_email_template.ejs
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medication Reminder</title>
+</head>
+<body>
+  <p>Please remember to take your medication at the specified time.</p>
+  <button onclick="markMedicationAsDone('<%= medicationId %>')">Mark as Done</button>
+
+  <script>
+    async function markMedicationAsDone(medicationId) {
+      try {
+        const response = await fetch("/markasdone/" + medicationId, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          alert("Medication marked as done successfully!");
+          // Optionally, you can reload the page or perform other actions after marking as done
+        } else {
+          alert("Failed to mark medication as done.");
+        }
+      } catch (error) {
+        console.error("Error marking medication as done:", error);
+        alert("An error occurred while marking medication as done.");
+      }
+    }
+  </script>
+</body>
+</html> -->
+
+
+
+
+
+<!-- Email template for medication reminder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Reminder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .reminder-info {
+            margin-bottom: 20px;
+        }
+        .reminder-info strong {
+            color: #007bff;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .footer p {
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Medication Reminder</h2>
+        <div class="reminder-info">
+            <p>Please remember to take your medication <strong><%= medication.name %></strong> at <strong><%= medication.time %></strong> on <strong><%= medication.date %></strong>.</p>
+        </div>
+        <div class="footer">
+            <p>This is an automated reminder. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

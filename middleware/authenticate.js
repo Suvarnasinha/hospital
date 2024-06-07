@@ -1,22 +1,15 @@
 const jwt = require('jsonwebtoken');
-// const secretKey = 'secret_key';
 require('dotenv').config();
 
-// Now you can access the secret key from process.env in your authentication logic
-const secretKey = process.env.SECRET_KEY;
+// const secretKey = process.env.SECRET_KEY;
+const secretKey='secret_key'
 
-
-
-let loggedOutTokens = [];
-const authenticate = async (req,res,next)=>{
+const authenticate = async (req, res, next) => {
   const token = req.cookies.token;
-  console.log("token",token)
-  if (!token) {
-    res.render("login")
-  }
+  console.log("token", token);
 
-  if (loggedOutTokens.includes(token)) {
-    return res.json({ error: 'Token is logged out' });
+  if (!token) {
+    return res.render("login");
   }
 
   jwt.verify(token, secretKey, (err, decoded) => {
@@ -28,6 +21,6 @@ const authenticate = async (req,res,next)=>{
     req.token = token;
     next();
   });
-}
+};
 
-module.exports = { authenticate, loggedOutTokens, secretKey };
+module.exports = { authenticate };

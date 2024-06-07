@@ -1,8 +1,8 @@
-  <!DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Medication List</title>
     <style>
       body {
@@ -16,7 +16,9 @@
         margin: 20px auto;
         overflow: hidden;
       }
-      h1, h2, h3 {
+      h1,
+      h2,
+      h3 {
         text-align: center;
         color: #333;
       }
@@ -26,17 +28,13 @@
         margin: 20px 0;
         background-color: #fff;
       }
-      th, td {
+      th,
+      td {
         padding: 8px 12px;
         text-align: left;
         border: 1px solid #ddd;
       }
-      /* th {
-        background-color: #f2f2f2;
-      }
-      tr:nth-child(even) {
-        background-color: #f9f9f9;
-      } */
+
       .one-time {
         background-color: #e0f7fa;
       }
@@ -62,16 +60,13 @@
       .logout {
         padding-top: 20px;
         padding-left: 100px;
-    
       }
     </style>
   </head>
   <body>
-    <div class="logout">
-      <%- include('./partials/logout'); %>
-    </div>
+    <div class="logout"><%- include('./partials/logout'); %></div>
     <div class="container">
-      <h1>Medication Management</h1>
+      <h1>Health and Wellness Management</h1>
       <div class="typecontainer">
         <p>Want to add the medication here?</p>
         <p>Is it one-time?</p>
@@ -93,13 +88,14 @@
           </tr>
         </thead>
         <tbody>
-          <% userMedications.filter(user => user.type === 'one-time').forEach(user => { %>
-            <tr class="one-time">
-              <td><%= user.name %></td>
-              <td><%= user.description %></td>
-              <td><%= user.date %></td>
-              <td><%= user.time %></td>
-            </tr>
+          <% userMedications.filter(user => user.type ===
+          'one-time').forEach(user => { %>
+          <tr class="one-time">
+            <td><%= user.name %></td>
+            <td><%= user.description %></td>
+            <td><%= user.date %></td>
+            <td><%= user.time %></td>
+          </tr>
           <% }) %>
         </tbody>
       </table>
@@ -117,18 +113,19 @@
           </tr>
         </thead>
         <tbody>
-          <% userMedications.filter(user => user.type === 'recurring').forEach(user => { %>
-            <tr class="recurring">
-              <td><%= user.name %></td>
-              <td><%= user.description %></td>
-              <td><%= user.start_date %></td>
-              <td><%= user.end_date %></td>
-              <td><%= user.time %></td>
-              <td><%= user.rec_type %></td>
-            </tr>
+          <% userMedications.filter(user => user.type ===
+          'recurring').forEach(user => { %>
+          <tr class="recurring">
+            <td><%= user.name %></td>
+            <td><%= user.description %></td>
+            <td><%= user.start_date %></td>
+            <td><%= user.end_date %></td>
+            <td><%= user.time %></td>
+            <td><%= user.rec_type %></td>
+          </tr>
           <% }) %>
         </tbody>
       </table>
     </div>
   </body>
-  </html>
+</html>
